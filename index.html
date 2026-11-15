@@ -47,15 +47,15 @@ footer{border-top:1px solid var(--line);padding:30px 0 40px;text-align:center;co
 <p class="note">Collection: every Friday, second half of lunch, in the rotunda.</p></div></section>
 <footer><a href="https://www.instagram.com/clasp.coleap" target="_blank" rel="noopener">Instagram</a> &nbsp;·&nbsp; <a href="https://www.tiktok.com/@clasp.coleap" target="_blank" rel="noopener">TikTok</a><br>Questions? <a href="mailto:006287@gsal.org.uk">006287@gsal.org.uk</a><br>A Leap enterprise project at The Grammar School at Leeds.</footer>
 <script>
-const $=s=>document.querySelector(s),£=p=>"£"+(p/100).toFixed(2);let P=[],cart={};
+const $=s=>document.querySelector(s),gbp=p=>"£"+(p/100).toFixed(2);let P=[],cart={};
 if(location.search.includes("paid=1"))$("#paid").hidden=false;
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(){try{P=await (await fetch("/api/products")).json()}catch{$("#grid").textContent="Couldn't load the collection. Please refresh.";return}
 $("#grid").innerHTML=P.map(p=>`<article class="card ${p.left<1?"sold":""}"><img src="${p.id}.jpg" alt="${esc(p.name)}"><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
-<div class="row"><span class="price">${£(p.price)}</span><button class="btn" data-id="${p.id}" ${p.left<1?"disabled":""}>${p.left<1?"Sold out":"Add"}</button></div>${p.left>0&&p.left<3?`<span class="low">Only ${p.left} left</span>`:""}</article>`).join("");render()}
+<div class="row"><span class="price">${gbp(p.price)}</span><button class="btn" data-id="${p.id}" ${p.left<1?"disabled":""}>${p.left<1?"Sold out":"Add"}</button></div>${p.left>0&&p.left<3?`<span class="low">Only ${p.left} left</span>`:""}</article>`).join("");render()}
 function render(){const it=P.filter(p=>cart[p.id]);let n=0,t=0;
-$("#lines").innerHTML=it.length?it.map(p=>{n+=cart[p.id];t+=cart[p.id]*p.price;return`<div class="line"><span>${esc(p.name)}</span><span><button data-d="-1" data-id="${p.id}">−</button>${cart[p.id]}<button data-d="1" data-id="${p.id}">+</button></span><span>${£(p.price*cart[p.id])}</span></div>`}).join(""):'<p class="note">Your basket is empty.</p>';
-$("#total").textContent=£(t);$("#nav").textContent=`Basket (${n})`;$("#pay").disabled=!n}
+$("#lines").innerHTML=it.length?it.map(p=>{n+=cart[p.id];t+=cart[p.id]*p.price;return`<div class="line"><span>${esc(p.name)}</span><span><button data-d="-1" data-id="${p.id}">−</button>${cart[p.id]}<button data-d="1" data-id="${p.id}">+</button></span><span>${gbp(p.price*cart[p.id])}</span></div>`}).join(""):'<p class="note">Your basket is empty.</p>';
+$("#total").textContent=gbp(t);$("#nav").textContent=`Basket (${n})`;$("#pay").disabled=!n}
 document.addEventListener("click",e=>{const b=e.target.closest("button[data-id]");if(!b)return;const p=P.find(x=>x.id===b.dataset.id),d=b.dataset.d?+b.dataset.d:1;
 cart[p.id]=Math.min(p.left,(cart[p.id]||0)+d);if(cart[p.id]<1)delete cart[p.id];render()});
 $("#pay").onclick=async()=>{const m=$("#msg");m.textContent="";const email=$("#email").value.trim().toLowerCase();
