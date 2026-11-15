@@ -1,3 +1,4 @@
 [build]
-  publish = "."
+  command = "mkdir -p public && cp index.html *.jpg public/"
+  publish = "public"
   functions = "netlify/functions"
