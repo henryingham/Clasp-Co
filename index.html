@@ -35,7 +35,7 @@ footer{border-top:1px solid var(--line);padding:30px 0 40px;text-align:center;co
 </style></head><body>
 <div id="paid" class="ok" hidden>Thank you! Your payment went through and a receipt is on its way to your school email. Collect your order on Friday, in the second half of lunch, in the rotunda.</div>
 <nav><div class="wrap"><b>Clasp &amp; Co</b><a href="#basket" id="nav">Basket (0)</a></div></nav>
-<header class="hero wrap"><img src="img/logo.jpg" alt="Clasp &amp; Co Watches"><p>Order online. Collect on Fridays in the rotunda.</p></header>
+<header class="hero wrap"><img src="logo.jpg" alt="Clasp &amp; Co Watches"><p>Order online. Collect on Fridays in the rotunda.</p></header>
 <main class="wrap"><h2>The collection</h2><div class="grid" id="grid"></div>
 <p class="note" style="text-align:center;margin-top:24px">Watches are shown with display boxes for photos only. Boxes are not included.</p></main>
 <section id="basket"><div class="wrap"><h2>Your basket</h2><div id="lines"></div>
@@ -51,7 +51,7 @@ const $=s=>document.querySelector(s),£=p=>"£"+(p/100).toFixed(2);let P=[],cart
 if(location.search.includes("paid=1"))$("#paid").hidden=false;
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(){try{P=await (await fetch("/api/products")).json()}catch{$("#grid").textContent="Couldn't load the collection. Please refresh.";return}
-$("#grid").innerHTML=P.map(p=>`<article class="card ${p.left<1?"sold":""}"><img src="img/${p.id}.jpg" alt="${esc(p.name)}"><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
+$("#grid").innerHTML=P.map(p=>`<article class="card ${p.left<1?"sold":""}"><img src="${p.id}.jpg" alt="${esc(p.name)}"><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
 <div class="row"><span class="price">${£(p.price)}</span><button class="btn" data-id="${p.id}" ${p.left<1?"disabled":""}>${p.left<1?"Sold out":"Add"}</button></div>${p.left>0&&p.left<3?`<span class="low">Only ${p.left} left</span>`:""}</article>`).join("");render()}
 function render(){const it=P.filter(p=>cart[p.id]);let n=0,t=0;
 $("#lines").innerHTML=it.length?it.map(p=>{n+=cart[p.id];t+=cart[p.id]*p.price;return`<div class="line"><span>${esc(p.name)}</span><span><button data-d="-1" data-id="${p.id}">−</button>${cart[p.id]}<button data-d="1" data-id="${p.id}">+</button></span><span>${£(p.price*cart[p.id])}</span></div>`}).join(""):'<p class="note">Your basket is empty.</p>';

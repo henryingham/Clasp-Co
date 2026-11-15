@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { PRODUCTS, getStock, setStock } from "../lib/products.js";
+import { PRODUCTS, getStock, setStock } from "../lib/store.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async (req) => {
   let ev;
