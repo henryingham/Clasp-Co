@@ -29,8 +29,15 @@ export const PRODUCTS = [
 const store = () => getStore("stock");
 export async function getStock() {
   const s = store(), out = {};
-  for (const p of PRODUCTS) { const v = await s.get(p.id); out[p.id] = v === null ? p.stock : Number(v); }
+  await Promise.all(PRODUCTS.map(async p => { const v = await s.get(p.id); out[p.id] = v === null ? p.stock : Number(v); }));
   return out;
 }
 export const setStock = (id, n) => store().set(id, String(Math.max(0, n)));
 export const ordersStore = () => getStore("orders");
+const priceStore = () => getStore("prices");   // prices set in the admin page override the ones above
+export async function getPrices() {
+  const s = priceStore(), out = {};
+  await Promise.all(PRODUCTS.map(async p => { const v = await s.get(p.id); out[p.id] = v === null ? p.price : Number(v); }));
+  return out;
+}
+export const setPrice = (id, pence) => priceStore().set(id, String(pence));
